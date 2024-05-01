@@ -2,28 +2,15 @@
  * slam_gmapping
  * Copyright (c) 2008, Willow Garage, Inc.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *   * Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *   * Neither the names of Stanford University or Willow Garage, Inc. nor the names of its
- *     contributors may be used to endorse or promote products derived from
- *     this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THE WORK (AS DEFINED BELOW) IS PROVIDED UNDER THE TERMS OF THIS CREATIVE
+ * COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED BY
+ * COPYRIGHT AND/OR OTHER APPLICABLE LAW. ANY USE OF THE WORK OTHER THAN AS
+ * AUTHORIZED UNDER THIS LICENSE OR COPYRIGHT LAW IS PROHIBITED.
+ * 
+ * BY EXERCISING ANY RIGHTS TO THE WORK PROVIDED HERE, YOU ACCEPT AND AGREE TO
+ * BE BOUND BY THE TERMS OF THIS LICENSE. THE LICENSOR GRANTS YOU THE RIGHTS
+ * CONTAINED HERE IN CONSIDERATION OF YOUR ACCEPTANCE OF SUCH TERMS AND
+ * CONDITIONS.
  *
  */
 
@@ -32,7 +19,7 @@
 #include "ros/ros.h"
 #include "sensor_msgs/LaserScan.h"
 #include "std_msgs/Float64.h"
-#include "nav_msgs/GetMap.h"
+#include "nav_msgs/GetMap.h"//这个是ros中自带的头文件
 #include "tf/transform_listener.h"
 #include "tf/transform_broadcaster.h"
 #include "message_filters/subscriber.h"
@@ -47,7 +34,6 @@ class SlamGMapping
 {
   public:
     SlamGMapping();
-    SlamGMapping(ros::NodeHandle& nh, ros::NodeHandle& pnh);
     SlamGMapping(unsigned long int seed, unsigned long int max_duration_buffer);
     ~SlamGMapping();
 
@@ -72,7 +58,7 @@ class SlamGMapping
     tf::MessageFilter<sensor_msgs::LaserScan>* scan_filter_;
     tf::TransformBroadcaster* tfB_;
 
-    GMapping::GridSlamProcessor* gsp_;
+    GMapping::GridSlamProcessor* gsp_;//这个数据结构是用来记录粒子树，见PR466页
     GMapping::RangeSensor* gsp_laser_;
     // The angles in the laser, going from -x to x (adjustment is made to get the laser between
     // symmetrical bounds as that's what gmapping expects)
@@ -88,8 +74,10 @@ class SlamGMapping
     bool got_first_scan_;
 
     bool got_map_;
+	
+    //typedef GetMapResponse Response;找不到这个文件是因为这个是ros中自带的数据类型
+    //在这个网址中可以查看到相关ros nav_msgs的相关信息:http://wiki.ros.org/nav_msgs
     nav_msgs::GetMap::Response map_;
-
     ros::Duration map_update_interval_;
     tf::Transform map_to_odom_;
     boost::mutex map_to_odom_mutex_;
